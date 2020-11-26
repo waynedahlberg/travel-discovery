@@ -29,6 +29,14 @@ struct Category: Hashable {
   let name, imageName: String
 }
 
+struct Restaurant: Hashable {
+  let name, imageName: String
+}
+
+struct Creator: Hashable {
+  let name, imageName: String
+}
+
 struct Destination: Hashable {
   let name, country, imageName: String
 }
@@ -86,6 +94,11 @@ struct PopularDestinationsView: View {
 }
 
 struct PopularRestaurantsView: View {
+  
+  let restaurants: [Restaurant] = [
+    .init(name: "Japan's Finest Tapas", imageName: "tapas"),
+    .init(name: "Bar & Grill", imageName: "bar_grill"),
+  ]
   var body: some View {
     HStack {
       Text("Popular places to eat")
@@ -100,13 +113,42 @@ struct PopularRestaurantsView: View {
     
     ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8.0) {
-        ForEach(0..<3, id:\.self) { num in
-          Spacer()
-            .frame(width: 228, height: 80)
-            .background(Color.gray)
-            .cornerRadius(5)
-            .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
-            .padding(.bottom)
+        ForEach(restaurants, id:\.self) { restaurant in
+          HStack(spacing: 8) {
+            Image(restaurant.imageName)
+              .resizable()
+              .scaledToFill()
+              .frame(width: 60, height: 60)
+              .clipped()
+              .cornerRadius(5)
+              .padding(.leading, 6)
+              .padding(.vertical, 6)
+            
+            VStack(alignment: .leading, spacing: 4) {
+              HStack {
+                Text(restaurant.name)
+                Spacer()
+                Button(action: {}, label: {
+                  Image(systemName: "ellipsis")
+                })
+              }
+              
+              HStack {
+                Image(systemName: "star.fill")
+                Text("4.7 • Sushi • $$")
+              }
+              Text("Tokyo, Japan")
+            }
+            .font(.system(size: 12, weight: .semibold))
+
+            
+            Spacer()
+          }
+          .frame(width: 240)
+          .background(Color(white: 0.9))
+          .cornerRadius(5)
+          .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
+          .padding(.bottom)
         }
       }.padding(.horizontal)
     }
@@ -114,6 +156,13 @@ struct PopularRestaurantsView: View {
 }
 
 struct TrendingCreatorsView: View {
+  
+  let creators: [Creator] = [
+    .init(name: "Amy Adams", imageName: "amy"),
+    .init(name: "Bill", imageName: "billy"),
+    .init(name: "Sam Soffes", imageName: "sam"),
+  ]
+  
   var body: some View {
     HStack {
       Text("Trending Creators")
@@ -127,14 +176,22 @@ struct TrendingCreatorsView: View {
     .padding(.top)
     
     ScrollView(.horizontal, showsIndicators: false) {
-      HStack(spacing: 8.0) {
-        ForEach(0..<7, id:\.self) { num in
-          Spacer()
-            .frame(width: 50, height: 50)
-            .background(Color.gray)
-            .cornerRadius(.infinity)
-            .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
-            .padding(.bottom)
+      HStack(alignment: .top, spacing: 12) {
+        ForEach(creators, id:\.self) { creator in
+          VStack {
+            Image(creator.imageName)
+              .resizable()
+              .scaledToFill()
+              .frame(width: 60, height: 60)
+              .clipShape(Circle())
+              .shadow(color: .gray, radius: 4, x: 0.0, y: 2)
+            
+            Text(creator.name)
+              .font(.system(size: 14, weight: .semibold))
+              .multilineTextAlignment(.center)
+
+          }
+          
         }
       }.padding(.horizontal)
     }
